@@ -1,0 +1,9 @@
+pandas
+numpy
+geopandas
+matplotlib
+contextily
+plotly
+requests
+pyogrio
+jupyter
