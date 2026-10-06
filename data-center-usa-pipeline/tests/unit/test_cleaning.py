@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from src.datacenter_usa.cleaning import (
+from datacenter_usa.cleaning import (
     extract_coordinates,
     filter_valid_coordinates,
     valid_coordinate_mask,

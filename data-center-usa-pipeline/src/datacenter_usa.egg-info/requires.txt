@@ -1,0 +1,12 @@
+pandas
+numpy
+geopandas
+matplotlib
+contextily
+plotly
+requests
+pyogrio
+
+[dev]
+pytest
+pytest-cov

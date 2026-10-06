@@ -52,7 +52,7 @@ def extract_coordinates(data: pd.DataFrame) -> pd.DataFrame:
     ----------
     data:
         Input data frame.
-
+        
     Returns
     -------
     pandas.DataFrame
@@ -65,6 +65,8 @@ def extract_coordinates(data: pd.DataFrame) -> pd.DataFrame:
     ValueError
         If no usable coordinate columns can be detected.
     """
+    
+    
     if not isinstance(data, pd.DataFrame):
         raise TypeError("data doit être un pandas.DataFrame")
 
@@ -95,6 +97,8 @@ def extract_coordinates(data: pd.DataFrame) -> pd.DataFrame:
 
 def valid_coordinate_mask(data: pd.DataFrame) -> pd.Series:
     """Return a boolean mask for rows with valid geographic coordinates."""
+
+
     if not {"latitude", "longitude"}.issubset(data.columns):
         raise ValueError("Les colonnes 'latitude' et 'longitude' sont requises.")
 

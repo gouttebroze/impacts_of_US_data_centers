@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datacenter-usa"
+version = "0.1.0"
+description = "US data center geospatial and business analysis project"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "numpy",
+    "geopandas",
+    "matplotlib",
+    "contextily",
+    "plotly",
+    "requests",
+    "pyogrio",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["datacenter_usa*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+
