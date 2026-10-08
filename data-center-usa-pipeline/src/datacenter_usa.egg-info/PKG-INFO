@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: datacenter-usa
+Version: 0.1.0
+Summary: US data center geospatial and business analysis project
+Requires-Python: >=3.10
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: geopandas
+Requires-Dist: matplotlib
+Requires-Dist: contextily
+Requires-Dist: plotly
+Requires-Dist: requests
+Requires-Dist: pyogrio
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
