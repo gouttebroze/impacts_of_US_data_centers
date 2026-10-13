@@ -1,16 +1,69 @@
 """Cleaning and validation helpers for the US data center project."""
 
 from __future__ import annotations
-
 import re
-
 import pandas as pd
+import unicodedata
 
 
 LATITUDE_CANDIDATES = ("latitude", "lat", "y")
 LONGITUDE_CANDIDATES = ("longitude", "lon", "lng", "x")
 COORDINATE_CANDIDATES = ("coordinate", "coordinates", "coords")
 
+
+def _normalize_column_name(column: object) -> str:
+    """Normalize a single column name to lowercase ASCII snake_case."""
+    # Convert to string and apply Unicode compatibility normalization.
+    name = unicodedata.normalize("NFKD", str(column).casefold())
+
+    # Remove accent marks after Unicode decomposition.
+    name = "".join(
+        char for char in name
+        if not unicodedata.combining(char)
+    )
+
+    # Replace punctuation and separators with underscores.
+    name = re.sub(r"[^a-z0-9]+", "_", name)
+
+    return name.strip("_")
+
+
+def normalize_columns(data: pd.DataFrame) -> pd.DataFrame:
+    """
+    Normalize column names and reject empty or duplicate names.
+
+    The input DataFrame is not modified.
+    """
+    if not isinstance(data, pd.DataFrame):
+        raise TypeError("data doit être un pandas.DataFrame")
+
+    result = data.copy()
+
+    normalized_columns = pd.Index([
+        _normalize_column_name(column)
+        for column in result.columns
+    ])
+
+    if (normalized_columns == "").any():
+        raise ValueError(
+            "La normalisation produit un nom de colonne vide."
+        )
+
+    if normalized_columns.has_duplicates:
+        duplicates = (
+            normalized_columns[
+                normalized_columns.duplicated(keep=False)
+            ]
+            .unique()
+            .tolist()
+        )
+        raise ValueError(
+            "La normalisation produit des noms de colonnes dupliqués : "
+            f"{duplicates}"
+        )
+
+    result.columns = normalized_columns
+    return result
 
 def _find_coordinate_column(columns: pd.Index) -> str | None:
     """Return the first column that looks like a combined coordinate field."""
