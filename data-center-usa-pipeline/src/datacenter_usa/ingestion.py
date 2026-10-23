@@ -1,4 +1,4 @@
-"""Generic data ingestion utilities."""
+"""Reusable data-ingestion helpers."""
 
 from __future__ import annotations
 
@@ -14,56 +14,22 @@ def load_csv(
     encoding: str = "utf-8",
     **kwargs: Any,
 ) -> pd.DataFrame:
-    """
-    -----------
-  -- Parameters --
-    -----------
-    source:
-        Local file path or HTTP(S) URL.
-    encoding:
-        File encoding. Defaults to UTF-8.
-    
-    **kwargs: (see .py doc to get more informations on **kwargs with parameters details)
-        Additional arguments passed to pandas.read_csv().
-
-    Returns
-    -------
-    pandas.DataFrame
-        Loaded dataset.
-
-    Raises
-    ------
-    FileNotFoundError
-        If a local file does not exist.
-    ValueError
-        If the source is empty.
-    """
-    source = str(source).strip()
-
-    if not source:
+    """Read a CSV from a local path or HTTP(S) URL using pandas."""
+    source_text = str(source).strip()
+    if not source_text:
         raise ValueError("La source CSV ne peut pas être vide.")
 
-    if source.startswith(("http://", "https://")):
-        return pd.read_csv(
-            source,
-            encoding=encoding,
-            **kwargs,
-        )
+    if source_text.startswith(("http://", "https://")):
+        # Let pandas surface network and parsing errors to the caller.
+        return pd.read_csv(source_text, encoding=encoding, **kwargs)
 
-    path = Path(source)
-
+    path = Path(source_text)
     if not path.exists():
-        raise FileNotFoundError(
-            f"Fichier CSV introuvable : {path}"
-        )
-
+        raise FileNotFoundError(f"Fichier CSV introuvable : {path}")
     if not path.is_file():
-        raise ValueError(
-            f"La source n'est pas un fichier : {path}"
-        )
+        raise ValueError(f"La source n'est pas un fichier : {path}")
 
-    return pd.read_csv(
-        path,
-        encoding=encoding,
-        **kwargs,
-    )
+    try:
+        return pd.read_csv(path, encoding=encoding, **kwargs)
+    except pd.errors.EmptyDataError as exc:
+        raise ValueError(f"Le fichier CSV est vide : {path}") from exc
