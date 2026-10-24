@@ -14,3 +14,7 @@ Requires-Dist: pyogrio
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: pytest-cov; extra == "dev"
+Provides-Extra: db
+Requires-Dist: SQLAlchemy>=2.0; extra == "db"
+Requires-Dist: psycopg[binary]>=3.2; extra == "db"
+Requires-Dist: python-dotenv>=1.0; extra == "db"

@@ -19,8 +19,13 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-cov"]
-
+dev = ["pytest", "pytest-cov",
+]
+db = [
+    "SQLAlchemy>=2.0",
+    "psycopg[binary]>=3.2",
+    "python-dotenv>=1.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -29,5 +34,4 @@ include = ["datacenter_usa*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
-
-
+markers = ["integration: requires a running PostgreSQL/PostGIS database"]
