@@ -7,13 +7,8 @@
 
 ## 2. Configurer les variables locales
 
-À la racine de `data-center-usa-pipeline` :
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Modifie `POSTGRES_PASSWORD` et garde `DATABASE_URL` cohérente avec les identifiants. Ne commite jamais `.env`.
+- création d'un fichier `.env`, contenant les variables d'environnement. 
+    **RAPPEL**: le fichier `.env` contient potentiellement des données sensibles, il doit  rester en local et toujours être inscrit dans le `.gitignore`.
 
 ## 3. Installer les dépendances base de données
 
